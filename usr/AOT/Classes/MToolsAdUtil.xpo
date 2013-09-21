@@ -1,0 +1,244 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: CLS
+
+; Microsoft Dynamics Class: MToolsAdUtil выгружен
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #MToolsAdUtil
+    Id 51833
+    PROPERTIES
+      Name                #MToolsAdUtil
+      Extends             #
+      RunOn               #Called from
+    ENDPROPERTIES
+    
+    METHODS
+      Version: 3
+      SOURCE #classDeclaration
+        #class MToolsAdUtil
+        #{
+        #    #CLR
+        #    #define.CLRTypeNameString('String')
+        #    #define.CLRTypeNameBoolArray('Byte[]')
+        #
+        #    #define.ADPropertyNameObjectSid('objectSid')
+        #}
+      ENDSOURCE
+      SOURCE #propertyValueCollection2Str
+        #public static str propertyValueCollection2Str(System.DirectoryServices.PropertyValueCollection _propertyValueCollection)
+        #{
+        #    InteropPermission permission;
+        #    System.Type valueType;
+        #    int valueCnt;
+        #    CLRObject clrException, value;
+        #    str propertyName, typeName, ret;
+        #;
+        #    try
+        #    {
+        #        propertyName = _propertyValueCollection.get_PropertyName();
+        #        valueCnt = _propertyValueCollection.get_Count();
+        #        if (valueCnt > 0)
+        #        {
+        #            value = _propertyValueCollection.get_Value();
+        #            valueType = value.GetType();
+        #
+        #            typeName = valueType.get_Name();
+        #            switch (typeName)
+        #            {
+        #                case #CLRTypeNameString:
+        #                    ret = value;
+        #                    break;
+        #                case #CLRTypeNameBoolArray:
+        #                    if (propertyName == #ADPropertyNameObjectSid)
+        #                    {
+        #                        ret = MToolsAdUtil::SecurityIdentifier2Str(value);
+        #                    }
+        #                    else
+        #                    {
+        #                        ret = strfmt('(%1)', typeName);
+        #                    }
+        #                    break;
+        #                default:
+        #                    ret = strfmt('(%1)', typeName);
+        #            }
+        #        }
+        #    }
+        #    catch (Exception::CLRError)
+        #    {
+        #        permission = new InteropPermission(InteropKind::ClrInterop);
+        #        permission.assert();
+        #        // BP deviation documented
+        #        clrException = CLRInterop::getLastException();
+        #        CodeAccessPermission::revertAssert();
+        #        throw error(getCLRExceprionText(clrException));
+        #    }
+        #    return ret;
+        #}
+      ENDSOURCE
+      SOURCE #searchAd
+        #public static System.DirectoryServices.SearchResultCollection searchAd(str _domain, str _filter, container _properties)
+        #{
+        #    InteropPermission permission;
+        #    System.DirectoryServices.DirectoryEntry directoryEntry;
+        #    System.DirectoryServices.DirectorySearcher directorySearcher;
+        #    System.DirectoryServices.SearchScope searchScope;
+        #    System.Collections.Specialized.StringCollection propertiesToLoad;
+        #    CLRObject clrException;
+        #    str propertyName;
+        #    int i;
+        #    System.DirectoryServices.SearchResultCollection ret;
+        #;
+        #    try
+        #    {
+        #        permission = new InteropPermission(InteropKind::ClrInterop);
+        #        permission.assert();
+        #        // BP deviation documented
+        #        directoryEntry = new System.DirectoryServices.DirectoryEntry(strfmt('LDAP://%1', _domain));
+        #        // BP deviation documented
+        #        directorySearcher = new System.DirectoryServices.DirectorySearcher(directoryEntry);
+        #        directorySearcher.set_PageSize(1000);
+        #        directorySearcher.set_Filter(_filter);
+        #        searchScope = CLRInterop::parseClrEnum(#Enum_SystemDirectoryServicesSearchScope_Subtree);
+        #        directorySearcher.set_SearchScope(searchScope);
+        #        propertiesToLoad = directorySearcher.get_PropertiesToLoad();
+        #        for (i = 1; i <= conlen(_properties); i ++)
+        #        {
+        #            propertyName = conpeek(_properties, i);
+        #            propertiesToLoad.Add(propertyName);
+        #        }
+        #        ret = directorySearcher.FindAll();
+        #        DirectorySearcher.Dispose();
+        #        CodeAccessPermission::revertAssert();
+        #    }
+        #    catch (Exception::CLRError)
+        #    {
+        #        permission = new InteropPermission(InteropKind::ClrInterop);
+        #        permission.assert();
+        #        // BP deviation documented
+        #        clrException = CLRInterop::getLastException();
+        #        CodeAccessPermission::revertAssert();
+        #        throw error(getCLRExceprionText(clrException));
+        #    }
+        #    return ret;
+        #}
+      ENDSOURCE
+      SOURCE #searchResult2Map
+        #public static Map searchResult2Map(System.DirectoryServices.SearchResult _searchResult)
+        #{
+        #    InteropPermission permission;
+        #    System.DirectoryServices.DirectoryEntry directoryEntry;
+        #    System.DirectoryServices.PropertyCollection propertyCollection;
+        #    System.DirectoryServices.PropertyValueCollection propertyValueCollection;
+        #    System.Collections.ICollection propertyNamesCollection;
+        #    System.Array propertyNames;
+        #    System.Type stringType = System.Type::GetType(#Type_SystemString);
+        #    CLRObject clrException;
+        #    int i, cnt;
+        #    str propertyName;
+        #    Map ret = new Map(Types::String, Types::Class);
+        #;
+        #    try
+        #    {
+        #        if (_searchResult)
+        #        {
+        #            directoryEntry = _searchResult.GetDirectoryEntry();
+        #            if (directoryEntry)
+        #            {
+        #                propertyCollection = directoryEntry.get_Properties();
+        #                if (propertyCollection)
+        #                {
+        #                    cnt = propertyCollection.get_Count();
+        #                    propertyNamesCollection = propertyCollection.get_PropertyNames();
+        #                    cnt = propertyNamesCollection.get_Count();
+        #                    propertyNames = System.Array::CreateInstance(stringType, cnt);
+        #                    propertyNamesCollection.CopyTo(propertyNames, 0);
+        #                    for (i = 0; i < cnt; i ++)
+        #                    {
+        #                        propertyName = propertyNames.GetValue(i);
+        #                        propertyValueCollection = propertyCollection.get_Item(propertyName);
+        #                        ret.insert(propertyName, propertyValueCollection);
+        #                    }
+        #                }
+        #            }
+        #        }
+        #    }
+        #    catch (Exception::CLRError)
+        #    {
+        #        permission = new InteropPermission(InteropKind::ClrInterop);
+        #        permission.assert();
+        #        // BP deviation documented
+        #        clrException = CLRInterop::getLastException();
+        #        CodeAccessPermission::revertAssert();
+        #        throw error(getCLRExceprionText(clrException));
+        #    }
+        #    return ret;
+        #}
+      ENDSOURCE
+      SOURCE #searchResultCollection2Set
+        #public static Set searchResultCollection2Set(System.DirectoryServices.SearchResultCollection _searchResultCollection)
+        #{
+        #    InteropPermission permission;
+        #    System.DirectoryServices.SearchResult searchResult;
+        #    CLRObject clrException;
+        #    int i, cnt;
+        #    Set ret = new Set(Types::Class);
+        #;
+        #    try
+        #    {
+        #        cnt = _searchResultCollection.get_Count();
+        #        for (i = 0; i < cnt; i ++)
+        #        {
+        #            searchResult = _searchResultCollection.get_Item(i);
+        #            ret.add(MToolsAdUtil::searchResult2Map(searchResult));
+        #        }
+        #    }
+        #    catch (Exception::CLRError)
+        #    {
+        #        permission = new InteropPermission(InteropKind::ClrInterop);
+        #        permission.assert();
+        #        // BP deviation documented
+        #        clrException = CLRInterop::getLastException();
+        #        CodeAccessPermission::revertAssert();
+        #        throw error(getCLRExceprionText(clrException));
+        #    }
+        #    return ret;
+        #}
+      ENDSOURCE
+      SOURCE #securityIdentifier2Str
+        #public static str securityIdentifier2Str(System.Array _byteArray)
+        #{
+        #    InteropPermission permission;
+        #    ClrObject securityIdentifier, clrException;
+        #    str ret;
+        #;
+        #    try
+        #    {
+        #        permission = new InteropPermission(InteropKind::ClrInterop);
+        #        permission.assert();
+        #        // BP deviation documented
+        #        securityIdentifier = new ClrObject(#Class_SystemSecurityPrincipalSecurityIdentifier, _byteArray, 0);
+        #        if (securityIdentifier)
+        #        {
+        #            ret = securityIdentifier.ToString();
+        #        }
+        #        CodeAccessPermission::revertAssert();
+        #    }
+        #    catch (Exception::CLRError)
+        #    {
+        #        permission = new InteropPermission(InteropKind::ClrInterop);
+        #        permission.assert();
+        #        // BP deviation documented
+        #        clrException = CLRInterop::getLastException();
+        #        CodeAccessPermission::revertAssert();
+        #        throw error(getCLRExceprionText(clrException));
+        #    }
+        #    return ret;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: END

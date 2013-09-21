@@ -1,0 +1,19 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: MCR
+
+; Microsoft Dynamics Macro: CLR выгружен
+; --------------------------------------------------------------------------------
+  JOBVERSION 1
+  
+  SOURCE #CLR
+    ##define.Enum_SystemDirectoryServicesSearchScope('System.DirectoryServices.SearchScope')
+    ##define.Enum_SystemDirectoryServicesSearchScope_Subtree(#Enum_SystemDirectoryServicesSearchScope, 'Subtree')
+    #
+    ##define.Class_SystemSecurityPrincipalSecurityIdentifier('System.Security.Principal.SecurityIdentifier')
+    #
+    ##define.Type_SystemString('System.String')
+  ENDSOURCE
+
+***Element: END

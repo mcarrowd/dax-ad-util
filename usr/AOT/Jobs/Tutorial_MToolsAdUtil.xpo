@@ -1,0 +1,46 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: JOB
+
+; Microsoft Dynamics Job: Tutorial_MToolsAdUtil выгружен
+; --------------------------------------------------------------------------------
+  JOBVERSION 1
+  
+  SOURCE #Tutorial_MToolsAdUtil
+    #static void Tutorial_MToolsAdUtil(Args _args)
+    #{
+    #    str domain = 'daxtest.net';
+    #    str filter = '(&(objectClass=user)(!objectClass=computer)(!userAccountControl:1.2.840.113556.1.4.803:=2))';
+    #
+    #    container props = ['cn', 'displayname', 'objectsid', 'title', 'department', 'initials'];
+    #    System.DirectoryServices.SearchResultCollection searchResultCollection;
+    #    str name, value;
+    #
+    #    SetEnumerator se;
+    #    Map map;
+    #    int i;
+    #;
+    #    searchResultCollection = MToolsAdUtil::searchAd(domain, filter, props);
+    #    if (searchResultCollection)
+    #    {
+    #        se = MToolsAdUtil::searchResultCollection2Set(searchResultCollection).getEnumerator();
+    #        while (se.moveNext())
+    #        {
+    #            map = se.current();
+    #            for (i = 1; i <= conlen(props); i ++)
+    #            {
+    #                name = conpeek(props, i);
+    #                if (map.exists(name))
+    #                {
+    #                    value = MToolsAdUtil::propertyValueCollection2Str(map.lookup(name));
+    #                    info(strfmt('%1,%2', name, value));
+    #                }
+    #            }
+    #        }
+    #        searchResultCollection.Dispose();
+    #    }
+    #}
+  ENDSOURCE
+
+***Element: END

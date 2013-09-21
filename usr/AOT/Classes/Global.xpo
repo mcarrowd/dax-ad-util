@@ -1,0 +1,50 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: CLS
+
+; Microsoft Dynamics Class: Global выгружен
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #Global
+    Id 61446
+    PROPERTIES
+      Name                #Global
+      Extends             #
+      RunOn               #Called from
+    ENDPROPERTIES
+    
+    METHODS
+      Version: 3
+      SOURCE #getCLRExceprionText
+        #public static str getCLRExceprionText(CLRObject _exception)
+        #{
+        #    InteropPermission permission;
+        #    CLRObject clrExcMessage, innerException;
+        #    str ret;
+        #;
+        #    if (_exception)
+        #    {
+        #        permission = new InteropPermission(InteropKind::ClrInterop);
+        #        permission.assert();
+        #        clrExcMessage = _exception.get_Message();
+        #        // BP Deviation Documented
+        #        ret = CLRInterop::getAnyTypeForObject( clrExcMessage );
+        #        innerException = _exception.get_InnerException();
+        #        while (innerException != null)
+        #        {
+        #            clrExcMessage = innerException.get_Message();
+        #            // BP Deviation Documented
+        #            ret += '\n' + CLRInterop::getAnyTypeForObject( clrExcMessage );
+        #            innerException = innerException.get_InnerException();
+        #        }
+        #        CodeAccessPermission::revertAssert();
+        #    }
+        #    return ret;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: END

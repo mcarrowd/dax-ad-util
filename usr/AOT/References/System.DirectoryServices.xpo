@@ -1,0 +1,23 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: REF
+
+; Microsoft Dynamics REFERENCE : System.DirectoryServices unloaded
+; --------------------------------------------------------------------------------
+  VERSION 1
+  
+  REFERENCE #System.DirectoryServices
+    PROPERTIES
+      Name                #System.DirectoryServices
+      AssemblyName        #System.DirectoryServices
+      AssemblyDisplayName #System.DirectoryServices, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL
+      Culture             #
+      PublicKeyToken      #b03f5f7f11d50a3a
+      Version             #2.0.0.0
+    ENDPROPERTIES
+    
+  ENDREFERENCE
+  
+
+***Element: END
