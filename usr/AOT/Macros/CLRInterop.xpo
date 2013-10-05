@@ -14,6 +14,20 @@ Formatversion: 1
     ##define.Class_SystemSecurityPrincipalSecurityIdentifier('System.Security.Principal.SecurityIdentifier')
     #
     ##define.Type_SystemString('System.String')
+    ##define.Type_SystemBoolean('System.Boolean')
+    ##define.Type_SystemByte('System.Byte')
+    #
+    ##localmacro.Operator_Brackets
+    ##IFNOT.EMPTY(%1)
+    #%1 +
+    ##ENDIF
+    #'[' +
+    ##IFNOT.EMPTY(%2)
+    #%2 +
+    ##ENDIF
+    #']'
+    ##endmacro
+    #
   ENDSOURCE
 
 ***Element: END

@@ -20,10 +20,7 @@ Formatversion: 1
       SOURCE #classDeclaration
         #class MToolsAdUtil
         #{
-        #    #CLRInterop
-        #    #define.CLRTypeNameString('String')
-        #    #define.CLRTypeNameBoolean('Boolean')
-        #    #define.CLRTypeNameBoolArray('Byte[]')
+        #    #macrolib.CLRInterop
         #
         #    #define.ADPropertyNameObjectSid('objectSid')
         #}
@@ -46,13 +43,13 @@ Formatversion: 1
         #            value = _propertyValueCollection.get_Value();
         #            valueType = value.GetType();
         #
-        #            typeName = valueType.get_Name();
+        #            typeName = valueType.get_FullName();
         #            switch (typeName)
         #            {
-        #                case #CLRTypeNameString:
+        #                case #Type_SystemString:
         #                    ret = value;
         #                    break;
-        #                case #CLRTypeNameBoolArray:
+        #                case #Operator_Brackets(#Type_SystemByte): // byte array
         #                    if (propertyName == #ADPropertyNameObjectSid)
         #                    {
         #                        ret = MToolsAdUtil::SecurityIdentifier2Str(value);
@@ -62,7 +59,7 @@ Formatversion: 1
         #                        ret = strfmt('(%1)', typeName);
         #                    }
         #                    break;
-        #                case #CLRTypeNameBoolean:
+        #                case #Type_SystemBoolean:
         #                    ret = value;
         #                    break;
         #                default:
