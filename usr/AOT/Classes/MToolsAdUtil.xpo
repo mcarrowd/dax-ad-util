@@ -25,14 +25,22 @@ Formatversion: 1
         #    #define.ADPropertyNameObjectSid('objectSid')
         #}
       ENDSOURCE
-      SOURCE #propertyValueCollection2Str
-        #public static str propertyValueCollection2Str(System.DirectoryServices.PropertyValueCollection _propertyValueCollection)
+      SOURCE #propertyValueCollection2Any
+        #public static anytype propertyValueCollection2Any(System.DirectoryServices.PropertyValueCollection _propertyValueCollection)
         #{
         #    InteropPermission permission;
         #    System.Type valueType;
         #    int valueCnt;
         #    CLRObject clrException, value;
-        #    str propertyName, typeName, ret;
+        #    str propertyName, typeName;
+        #    str strRet;
+        #    boolean booleanRet;
+        #    int intRet;
+        #    date dateRet;
+        #    System.DateTime dateTime;
+        #    int hours, minutes, seconds;
+        #    container containerRet;
+        #    anytype ret;
         #;
         #    try
         #    {
@@ -47,7 +55,8 @@ Formatversion: 1
         #            switch (typeName)
         #            {
         #                case #Type_SystemString:
-        #                    ret = value;
+        #                    strRet = value;
+        #                    ret = strRet;
         #                    break;
         #                case #Operator_Brackets(#Type_SystemByte): // byte array
         #                    if (propertyName == #ADPropertyNameObjectSid)
@@ -60,7 +69,21 @@ Formatversion: 1
         #                    }
         #                    break;
         #                case #Type_SystemBoolean:
-        #                    ret = value;
+        #                    booleanRet = value;
+        #                    ret = booleanRet;
+        #                    break;
+        #                case #Type_SystemInt32:
+        #                    intRet = value;
+        #                    ret = intRet;
+        #                    break;
+        #                case #Type_SystemDateTime:
+        #                    dateTime = value;
+        #                    dateRet = dateTime.get_Date();
+        #                    hours = dateTime.get_Hour();
+        #                    minutes = dateTime.get_Minute();
+        #                    seconds = dateTime.get_Second();
+        #                    containerRet = [dateRet, hours * 3600 + minutes * 60 + seconds];
+        #                    ret = containerRet;
         #                    break;
         #                default:
         #                    ret = strfmt('(%1)', typeName);
@@ -77,6 +100,13 @@ Formatversion: 1
         #        throw error(getCLRExceprionText(clrException));
         #    }
         #    return ret;
+        #}
+      ENDSOURCE
+      SOURCE #propertyValueCollection2Str
+        #public static str propertyValueCollection2Str(System.DirectoryServices.PropertyValueCollection _propertyValueCollection)
+        #{
+        #;
+        #    return strfmt('%1', MToolsADUtil::propertyValueCollection2Any(_propertyValueCollection));
         #}
       ENDSOURCE
       SOURCE #searchAd

@@ -16,6 +16,8 @@ Formatversion: 1
     ##define.Type_SystemString('System.String')
     ##define.Type_SystemBoolean('System.Boolean')
     ##define.Type_SystemByte('System.Byte')
+    ##define.Type_SystemInt32('System.Int32')
+    ##define.Type_SystemDateTime('System.DateTime')
     #
     ##localmacro.Operator_Brackets
     ##IFNOT.EMPTY(%1)
