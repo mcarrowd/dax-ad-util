@@ -20,7 +20,7 @@ Formatversion: 1
       SOURCE #classDeclaration
         #class MToolsAdUtil
         #{
-        #    #CLR
+        #    #CLRInterop
         #    #define.CLRTypeNameString('String')
         #    #define.CLRTypeNameBoolArray('Byte[]')
         #

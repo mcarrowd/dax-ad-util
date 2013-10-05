@@ -3,7 +3,7 @@ Formatversion: 1
 
 ***Element: PRN
 
-; Microsoft Business Solutions-Axapta Project : MTools_AdUtil unloaded at 2013.09.21
+; Microsoft Business Solutions-Axapta Project : MTools_AdUtil unloaded at 2013.10.05
 ; --------------------------------------------------------------------------------
   PROJECTVERSION 2
 
@@ -42,7 +42,7 @@ BEGINNODE
     UTILTYPE 4
     UTILOBJECTID 0
     NODETYPE 218
-    NAME #CLR
+    NAME #CLRInterop
 ENDNODE
 ENDGROUP
 

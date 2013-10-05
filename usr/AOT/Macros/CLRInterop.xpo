@@ -3,11 +3,11 @@ Formatversion: 1
 
 ***Element: MCR
 
-; Microsoft Dynamics Macro: CLR выгружен
+; Microsoft Dynamics Macro: CLRInterop выгружен
 ; --------------------------------------------------------------------------------
   JOBVERSION 1
   
-  SOURCE #CLR
+  SOURCE #CLRInterop
     ##define.Enum_SystemDirectoryServicesSearchScope('System.DirectoryServices.SearchScope')
     ##define.Enum_SystemDirectoryServicesSearchScope_Subtree(#Enum_SystemDirectoryServicesSearchScope, 'Subtree')
     #
