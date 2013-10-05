@@ -182,14 +182,26 @@ Formatversion: 1
         #}
       ENDSOURCE
       SOURCE #searchResultCollection2Set
-        #public static Set searchResultCollection2Set(System.DirectoryServices.SearchResultCollection _searchResultCollection)
+        #public static Set searchResultCollection2Set(System.DirectoryServices.SearchResultCollection _searchResultCollection, Set _addToSet = null)
         #{
         #    InteropPermission permission;
         #    System.DirectoryServices.SearchResult searchResult;
         #    CLRObject clrException;
         #    int i, cnt;
-        #    Set ret = new Set(Types::Class);
+        #    Set ret;
         #;
+        #    if (_addToSet)
+        #    {
+        #        if (_addToSet.typeId() != Types::Class)
+        #        {
+        #            throw error(strfmt("@SYS54195", funcname()));
+        #        }
+        #        ret = _addToSet;
+        #    }
+        #    else
+        #    {
+        #        ret = new Set(Types::Class);
+        #    }
         #    try
         #    {
         #        cnt = _searchResultCollection.get_Count();
